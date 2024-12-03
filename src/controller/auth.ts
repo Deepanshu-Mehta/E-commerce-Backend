@@ -3,7 +3,7 @@ import { prisma } from "../database/db";
 import {compare, hash} from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { SECRET_KEY } from "../secret";
-import { loginSchema, signupSchema } from "../routes/user";
+import { loginSchema, signupSchema } from "../schema.ts/user";
 
 export const signup = async (req : Request, res : Response)=>{
     try{
