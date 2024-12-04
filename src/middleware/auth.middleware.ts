@@ -1,24 +1,33 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from 'jsonwebtoken';
+import { prisma } from "../database/db";
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized: No token provided" });
+    res.status(401).json({ message: "Unauthorized: No token provided" });
+    return;
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY as string);
-    if(!decoded){
-        return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    const decoded = jwt.verify(token, process.env.SECRET_KEY as string) as { id: number };
+    const user = await prisma.user.findUnique({ where: { id: decoded.id } });
+  
+    if (!user) {
+      res.status(403).json({ message: "Unauthorized: User not found" });
+      return;
     }
-
-    // Proceed to the next middleware or route handler
+    req.user = user;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    if (err instanceof jwt.TokenExpiredError) {
+      res.status(401).json({ message: "Unauthorized: Token has expired" });
+    } else {
+      res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
   }
+  
 };
 
 export default authMiddleware;

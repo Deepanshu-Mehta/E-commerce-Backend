@@ -6,4 +6,4 @@ const rootRouter:Router = Router();
 rootRouter.use('/auth',authRoute)
 rootRouter.use('/product', productRouter);
 
-export default rootRouter;
+export default rootRouter; 
