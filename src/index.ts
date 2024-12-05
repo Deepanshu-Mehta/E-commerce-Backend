@@ -20,7 +20,7 @@ app.use((req: Request, res: Response) => {
 
 // Error-handling middleware - Should be the last middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err); // Log error for debugging (optional)
+  console.error(err); 
   res.status(500).send({ message: 'Internal Server Error' });
 });
 
