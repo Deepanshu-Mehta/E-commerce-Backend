@@ -10,7 +10,7 @@ const adminMiddleware = async (req: Request, res: Response, next: NextFunction) 
     else{
         res.status(401).json({ message: "Unauthorized" });
         return;
-        }
+      }
   } catch (err) {
    res.status(500).json({ message: "Internal Server Error" });
    return
