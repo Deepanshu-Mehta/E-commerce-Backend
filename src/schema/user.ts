@@ -17,6 +17,11 @@ export const AddressSchema = z.object({
     City: z.string().min(3).max(255),
     State: z.string().min(3).max(255),
     Country: z.string().min(3).max(255),
-    PostalCode: z.string().max(6),
+    PostalCode: z.number().int().gte(100000).lte(999999)
+})
 
+export const cartSchema = z.object({
+    ProductId: z.number(),
+    quantity : z.number(),
+    price : z.number()
 })

@@ -93,8 +93,8 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const me = (req: Request, res: Response): void => {
   try {
     const user = (req as any).user;
-    if (user) {
-      res.json(user);
+    if (user?.role) {
+      res.json(user.role);
       return;
     } else {
       res.status(400).json({ message: "User not found" });
